@@ -1,0 +1,25 @@
+---
+- name: install binary
+  ansible.builtin.get_url:
+    url: https://github.com/prometheus/prometheus/releases/download/v2.54.0/prometheus-2.54.0.linux-amd64.tar.gz
+    dest: /home/ubuntu
+    mode: '644'
+
+- name: untar binary file
+  ansible.builtin.unarchive:
+    src: "prometheus-2.54.0.linux-amd64.tar.gz"
+    dest: /home/ubuntu
+    remote_src: yes  
+
+- name: Change directory 
+  ansible.builtin.command:
+    cmd: "pwd"
+  args:
+    chdir: "/home/ubuntu/prometheus-2.54.0.linux-amd64"
+
+
+- name: run script
+  ansible.builtin.shell: "./prometheus --config.file=prometheus.yml"
+  args:
+    chdir: "/home/ubuntu/prometheus-2.54.0.linux-amd64"
+
